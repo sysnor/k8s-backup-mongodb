@@ -17,7 +17,8 @@ spec:
           
           containers:
           - name: backup-mongodb
-            image: ptuladhar/k8s-backup-mongodb:latest
+            image: ghcr.io/sysnor/k8s-backup-mongodb:latest
+            imagePullPolicy: IfNotPresent
             env:
             - name: MONGODB_URI
               valueFrom:
@@ -25,12 +26,12 @@ spec:
                   name: mongodb-uri
                   key: MONGODB_URI              
 
-            - name: BUCKET_URI
+            - name: BUCKET_NAME
               valueFrom:
                 secretKeyRef:
                   name: aws
-                  key: BUCKET_URI
-
+                  key: BUCKET_NAME
+            
             - name: AWS_ACCESS_KEY_ID
               valueFrom:
                 secretKeyRef:
@@ -49,8 +50,23 @@ spec:
                   name: aws
                   key: AWS_DEFAULT_REGION
 
+            # Below is optional
+
+            - name: BUCKET_PREFIX
+              valueFrom:
+                secretKeyRef:
+                  name: aws
+                  key: BUCKET_PREFIX
+
             - name: AWS_ENDPOINT
               valueFrom:
                 secretKeyRef:
                   name: aws
                   key: AWS_ENDPOINT
+            
+            - name: OBJECT_LOCK_DAYS
+              valueFrom:
+                secretKeyRef:
+                  name: aws
+                  key: OBJECT_LOCK_DAYS
+             
