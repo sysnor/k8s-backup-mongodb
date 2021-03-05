@@ -49,3 +49,8 @@ spec:
                   name: aws
                   key: AWS_DEFAULT_REGION
 
+            - name: AWS_ENDPOINT
+              valueFrom:
+                secretKeyRef:
+                  name: aws
+                  key: AWS_ENDPOINT
