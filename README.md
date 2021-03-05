@@ -6,9 +6,21 @@
  * Added fixes for Istio.
  * Added support for object lock.
 
-## [🐳 Docker Hub](https://hub.docker.com/r/ptuladhar/k8s-backup-mongodb) | [Medium](https://ptuladhar3.medium.com/schedule-mongodb-backup-to-s3-using-kubernetes-cronjob-79ca811e1fc0) | [DEV](https://dev.to/ptuladhar3/schedule-mongodb-backup-to-s3-using-kubernetes-cronjob-2bl7)
+## Usage
 
-![](images/cover.png)
+Example in kubernetes/cronjob.yaml.
+
+### S3 compatible providers
+
+To use an S3 compatible provider, set AWS_ENDPOINT to the S3 URL, e.g. *https://s3.REGION.backblazeb2.com*
+
+### Object lock
+
+If you have an S3 provider that supports object lock, make sure it is enabled on the bucket and add the days you want the object to be locked for in OBJECT_LOCK_DAYS.
+
+### Istio
+
+If running under Istio, add the ISTIO environment variable with any content (*e.g. ISTIO: "true"*). This will wait for the sidecar container when starting the job to make sure networking is ok and on completion send the quit command to the sidecar, otherwise the job will stay running waiting for the sidecar to finish.
 
 ## Acknowledgements
 
