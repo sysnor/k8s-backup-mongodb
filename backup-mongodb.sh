@@ -2,7 +2,7 @@
 
 set -e
 
-if [ -z "$ISTIO_META_APP_CONTAINERS" ]
+if [ ! -z "$ISTIO" ]
 then
 	until curl -fsI http://localhost:15021/healthz/ready; do echo \"Waiting for Sidecar...\"; sleep 3; done;
 	echo \"Sidecar available. Running the command...\";
@@ -21,17 +21,17 @@ mongodump --oplog \
 
 echo "[$SCRIPT_NAME] Uploading compressed archive to S3 bucket..."
 
-if [ -z "$AWS_ENDPOINT" ]
+if [ ! -z "$AWS_ENDPOINT" ]
 then
 	ENDPOINTPARAM="--endpoint-url=\"$AWS_ENDPOINT\""
 fi
 
-if [ -z "$BUCKET_PREFIX" ]
+if [ ! -z "$BUCKET_PREFIX" ]
 then
 	S3_PATH="${BUCKET_PREFIX}/"
 fi
 
-if [ -z "$OBJECT_LOCK_DAYS" ]
+if [ ! -z "$OBJECT_LOCK_DAYS" ]
 then
 	aws s3api put-object --bucket "${BUCKET_NAME}" --key "${S3_PATH}${ARCHIVE_NAME}" --body "$ARCHIVE_NAME" --object-lock-mode COMPLIANCE --object-lock-retain-until-date "$(date -d "+${OBJECT_LOCK_DAYS} days" "+%Y-%m-%d %H:%M:%S")" "$ENDPOINTPARAM"
 else
@@ -43,7 +43,7 @@ rm "$ARCHIVE_NAME"
 
 echo "[$SCRIPT_NAME] Backup complete!"
 
-if [ -z "$ISTIO_META_APP_CONTAINERS" ]
+if [ ! -z "$ISTIO" ]
 then
 	curl -fsI -X POST http://localhost:15020/quitquitquit
 fi

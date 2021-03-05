@@ -70,3 +70,5 @@ spec:
                   name: aws
                   key: OBJECT_LOCK_DAYS
              
+            - name: ISTIO
+              value: "true"
