@@ -23,17 +23,17 @@ echo "[$SCRIPT_NAME] Uploading compressed archive to S3 bucket..."
 
 if [ ! -z "$AWS_ENDPOINT" ]
 then
-	ENDPOINTPARAM="--endpoint-url=\"$AWS_ENDPOINT\""
+	ENDPOINTPARAM="--endpoint-url=${AWS_ENDPOINT}"
 fi
 
 if [ ! -z "$BUCKET_PREFIX" ]
 then
-	S3_PATH="${BUCKET_PREFIX}/"
+	S3_PATH=${BUCKET_PREFIX}/
 fi
 
 if [ ! -z "$OBJECT_LOCK_DAYS" ]
 then
-	aws s3api put-object --bucket "${BUCKET_NAME}" --key "${S3_PATH}${ARCHIVE_NAME}" --body "$ARCHIVE_NAME" --object-lock-mode COMPLIANCE --object-lock-retain-until-date "$(date -d "+${OBJECT_LOCK_DAYS} days" "+%Y-%m-%d %H:%M:%S")" "$ENDPOINTPARAM"
+	aws s3api put-object --bucket "${BUCKET_NAME}" --key "${S3_PATH}${ARCHIVE_NAME}" --body "$ARCHIVE_NAME" --object-lock-mode COMPLIANCE --object-lock-retain-until-date "$(date -d "+${OBJECT_LOCK_DAYS} days" "+%Y-%m-%d %H:%M:%S")" $ENDPOINTPARAM
 else
 	aws s3 cp "$ARCHIVE_NAME" "s3://$BUCKET_NAME/$S3_PATH" --no-progress $ENDPOINTPARAM
 fi
