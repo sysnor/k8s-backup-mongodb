@@ -1,6 +1,6 @@
 FROM mongo:latest
 
-RUN apt-get update && apt-get install --autoremove -y awscli
+RUN apt-get update && apt-get install --autoremove -y awscli curl
 
 WORKDIR /scripts
 
