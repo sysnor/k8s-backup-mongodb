@@ -1,6 +1,8 @@
 FROM mongo:latest
 
-RUN apt-get update && apt-get install --autoremove -y awscli curl
+RUN apt-get update && apt-get install --autoremove -y unzip curl && apt-get clean && rm -rf /var/cache/apt/archives /var/lib/apt/lists/*
+
+RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip" && unzip awscliv2.zip && ./aws/install && rm -fr ./aws
 
 WORKDIR /scripts
 
